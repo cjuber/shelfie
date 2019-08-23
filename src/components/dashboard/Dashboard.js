@@ -5,7 +5,7 @@ import axios from 'axios'
 export default class Dashboard extends Component {
 
     deleteProduct = (id) => {
-        console.log ('click')
+        
         axios.delete(`http://localhost:8080/api/inventory/${id}`)
         .then(response => {
             this.setState({
@@ -19,7 +19,7 @@ export default class Dashboard extends Component {
         const mappedList = this.props.list.map((list, index)=>{
 
         return(
-            <Product key={index} list={list} deleteProduct={this.deleteProduct}/>
+            <Product key={index} list={list} deleteProduct={this.deleteProduct} setId={this.props.setId}/>
             )
           })
 

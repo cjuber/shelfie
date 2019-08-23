@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 
 export default class Product extends Component {
     render() {
-        const {name, price, img} = this.props.list
+        const {name, price, img, id} = this.props.list
+        
         return (
             <div>
                 
@@ -10,7 +11,7 @@ export default class Product extends Component {
                 <p>{name}</p>
                 <p>{price}</p>
                 <button onClick={ () => this.props.deleteProduct(this.props.list.id)}>Delete</button>
-                <button>Edit</button>
+                <button onClick={ () => this.props.setId(this.props.list)}>Edit</button>
             </div>
         )
     }

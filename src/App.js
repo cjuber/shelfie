@@ -9,8 +9,12 @@ export default class App extends Component {
   constructor(){
     super()
     this.state = {
-      list: []
-
+      product:{},
+      list: [],
+      id: '',
+      img: '',
+      name: '',
+      price: ''
     }
   }
 
@@ -30,15 +34,26 @@ export default class App extends Component {
       })
     })
   }
+setId = (val) => {
+  
 
+this.setState({
+  
+  product: val,
+  
+  
+})
+
+
+}
 
     
   render() {
     return (
       <div>
         <Header/>
-        <Dashboard list={this.state.list} getList={this.getList}/>
-        <Form getList={this.getList} createProduct={this.createProduct}/>
+        <Dashboard list={this.state.list} getList={this.getList} setId={this.setId}/>
+        <Form getList={this.getList} createProduct={this.createProduct} id={this.state.id} list={this.state.list} product={this.state.product}/>
         
       </div>
     )

@@ -8,7 +8,9 @@ export default class Form extends Component {
             list:[],
             img: '',
             name: '',
-            price: ''
+            price: '',
+            id:'',
+            edit: false
         }
     }
     updateImg = (e) => {
@@ -46,12 +48,13 @@ export default class Form extends Component {
         })
     }
 
-    addItem = (event) => {   
+    addItem = () => {   
 
         const body = {
          name: this.state.name,
          price: this.state.price,
          img: this.state.img
+        
         }
             axios.post('http://localhost:8080/api/product', body).then(response =>{
 
@@ -60,21 +63,61 @@ export default class Form extends Component {
                 })
                 
                 this.props.getList()
+                
             })
     
     this.cancelBtn()
         
         
     }
+    
+
+    componentDidUpdate(prevProps){
+        let {name,price,img} = this.props.product
+        
+        if(prevProps.product.id !== this.props.product.id){
+           
+            this.setState({
+                name,
+                price, 
+                img,
+                edit: true
+            })
+            
+        }
+    }
+
+    updateProduct = (id) => {
+        const body = {
+            name: this.state.name,
+            price: this.state.price,
+            img: this.state.img
+        }
+
+        axios.put(`http://localhost:8080/api/product/${id}`, body).then( response => {
+            this.setState({list: response.data})
+        })
+        this.props.getList()
+    }
     render() {
        
         return (
             <div>
-                <input onChange={ (e) => this.updateImg(e.target.value)}></input>
-                <input onChange={ (e) => this.updateName(e.target.value)}></input>
-                <input onChange={ (e) => this.updatePrice(e.target.value)}></input>
+                <img height="150" src={this.state.img}></img>
+                <p>Image URL: </p>
+                <input value={this.state.img} onChange={ (e) => this.updateImg(e.target.value)}></input>
+                <p>Name: </p>
+                <input value={this.state.name} onChange={ (e) => this.updateName(e.target.value)}></input>
+                <p>Price: </p>
+                <input value={this.state.price} onChange={ (e) => this.updatePrice(e.target.value)}></input>
                 <button onClick={this.cancelBtn}>Cancel</button>
-                <button onClick={this.addItem}>Add</button>
+
+            {!this.state.edit ?
+                (<button onClick={this.addItem}>Add to Inventory</button>)
+                :
+                (<button onClick={this.updateProduct}>Save Changes</button>)
+
+            }
             </div>
         )
     }
