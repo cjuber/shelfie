@@ -31,9 +31,9 @@ export default class Form extends Component {
     }
 
     updatePrice = (e) => {
-
+        
         this.setState({
-            price: e
+            price: e * 1
         })
 
         
@@ -44,7 +44,8 @@ export default class Form extends Component {
         this.setState({
             img: '',
             name: '',
-            price: ''
+            price: '',
+            edit:false
         })
     }
 
@@ -61,8 +62,8 @@ export default class Form extends Component {
                 this.setState({
                 list: response.data
                 })
-                
                 this.props.getList()
+                
                 
             })
     
@@ -92,12 +93,20 @@ export default class Form extends Component {
             name: this.state.name,
             price: this.state.price,
             img: this.state.img
+            
         }
-
+        
         axios.put(`http://localhost:8080/api/product/${id}`, body).then( response => {
-            this.setState({list: response.data})
+        
+            this.setState({
+                list: response.data,
+                edit: false
+            })
         })
+        
         this.props.getList()
+        this.cancelBtn()
+
     }
     render() {
        
@@ -115,7 +124,7 @@ export default class Form extends Component {
             {!this.state.edit ?
                 (<button onClick={this.addItem}>Add to Inventory</button>)
                 :
-                (<button onClick={this.updateProduct}>Save Changes</button>)
+                (<button onClick={ () => this.updateProduct(this.props.product.id)}>Save Changes</button>)
 
             }
             </div>
