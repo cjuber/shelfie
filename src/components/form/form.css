@@ -1,0 +1,17 @@
+.form-container{
+
+    width: 425px;
+    height: 525px;
+    background: #3ad886;
+    
+}
+
+.formImg{
+
+    height: 200px;
+    width: 320px;
+   
+    object-fit: contain;
+    
+    
+}

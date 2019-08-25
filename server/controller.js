@@ -5,7 +5,13 @@ const getProducts = (req, res) => {
     })
 }
 
-
+const getOne = (req,res) => {
+    const {id} = req.params
+    const db = req.app.get('db')
+    db.get_product(id).then((product) => {
+        res.status(200).send(product)
+    })
+}
 
 const createProduct = (req,res) => {
     const {name, price, img} = req.body
@@ -41,6 +47,6 @@ const updateProduct = (req, res) => {
         getProducts,
         createProduct,
         deleteProduct,
-        updateProduct
-    
+        updateProduct,
+        getOne
     }

@@ -1,22 +1,56 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
+import {Link} from 'react-router-dom'
+
+import './form.css'
+
 export default class Form extends Component {
     constructor(){
         super()
         this.state={
             list:[],
             img: '',
+            imgURL:'https://3ie87c2dond928rt2e2zzo8o-wpengine.netdna-ssl.com/wp-content/themes/gonzo/images/no-image-featured-image.png',
             name: '',
             price: '',
             id:'',
             edit: false
         }
     }
+
+    componentDidMount(){
+        console.log('mount')
+        let {id} = this.props.match.params
+        if(id) {
+            axios.get(`http://localhost:8080/api/inventory/${id}`).then(response =>{
+                this.setState({
+                    list: response.data[0],
+                    
+                    
+                    edit: true
+                })
+                this.updateState()
+            })
+            
+            
+        }
+
+    }
+    updateState = ()=> {
+        this.setState({
+            imgURL: this.state.list.img,
+            name: this.state.list.name,
+            price: this.state.list.price,
+            img: this.state.list.img
+        })
+    }
     updateImg = (e) => {
 
         this.setState({
-            img: e
+            img: e,
+            imgURL: e,
+        
         })
 
     }
@@ -43,6 +77,7 @@ export default class Form extends Component {
 
         this.setState({
             img: '',
+            imgURL:'https://3ie87c2dond928rt2e2zzo8o-wpengine.netdna-ssl.com/wp-content/themes/gonzo/images/no-image-featured-image.png',
             name: '',
             price: '',
             edit:false
@@ -54,7 +89,8 @@ export default class Form extends Component {
         const body = {
          name: this.state.name,
          price: this.state.price,
-         img: this.state.img
+         img: this.state.img,
+         
         
         }
             axios.post('http://localhost:8080/api/product', body).then(response =>{
@@ -62,7 +98,7 @@ export default class Form extends Component {
                 this.setState({
                 list: response.data
                 })
-                this.props.getList()
+                
                 
                 
             })
@@ -73,20 +109,7 @@ export default class Form extends Component {
     }
     
 
-    componentDidUpdate(prevProps){
-        let {name,price,img} = this.props.product
-        
-        if(prevProps.product.id !== this.props.product.id){
-           
-            this.setState({
-                name,
-                price, 
-                img,
-                edit: true
-            })
-            
-        }
-    }
+    
 
     updateProduct = (id) => {
         const body = {
@@ -104,15 +127,16 @@ export default class Form extends Component {
             })
         })
         
-        this.props.getList()
+        
         this.cancelBtn()
 
     }
     render() {
-       
+        console.log(this.state.list)
         return (
             <div>
-                <img height="150" src={this.state.img}></img>
+                <div className="form-container">
+                <img height="150" src={this.state.imgURL} className="formImg"></img>
                 <p>Image URL: </p>
                 <input value={this.state.img} onChange={ (e) => this.updateImg(e.target.value)}></input>
                 <p>Name: </p>
@@ -120,13 +144,15 @@ export default class Form extends Component {
                 <p>Price: </p>
                 <input value={this.state.price} onChange={ (e) => this.updatePrice(e.target.value)}></input>
                 <button onClick={this.cancelBtn}>Cancel</button>
+                
 
             {!this.state.edit ?
-                (<button onClick={this.addItem}>Add to Inventory</button>)
+                (<Link exact to='/'><button onClick={this.addItem}>Add to Inventory</button></Link>)
                 :
-                (<button onClick={ () => this.updateProduct(this.props.product.id)}>Save Changes</button>)
+                (<Link exact to='/'><button onClick={ () => this.updateProduct(this.state.list.id)}>Save Changes</button></Link>)
 
             }
+            </div>
             </div>
         )
     }
