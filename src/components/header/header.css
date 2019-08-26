@@ -34,4 +34,16 @@ font-family: 'Open Sans', sans-serif;
 .logo{
 
     margin-left: 100px;
+    display: flex;
+    justify-content: flex-start;
+}
+.shelfie{
+    color:white;
+    font-size: 30px;
+    font-family: 'Open Sans', sans-serif;
+}
+.logoImg{
+    height: 50px;
+    margin-right: 20px;
+    margin-top: 20px;
 }

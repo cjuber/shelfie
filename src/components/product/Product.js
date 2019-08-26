@@ -32,17 +32,22 @@ export default class Product extends Component {
         const {name, price, img, id} = this.props.list
         
         return (
+            <div className="products">
             <div className="product-container">
                 <div>
                 <img src={img} height="100" alt={name} className="prodImg"></img>
                 </div>
                 <div>
-                <p>{name}</p>
-                <p>{price}</p>
+                    <div className="titlePrice">
+                <p className="title">{name}</p>
+                <p className="price">${price}</p>
+                </div>
+
                 <Link exact to='/'><button className="prodBtn" onClick={ () => this.deleteProduct(id)}>Delete</button></Link>
-                <Link to={`/edit/${this.props.list.id}`}><button  className="prodBtn" >Edit</button> 
+                <Link to={`/edit/${this.props.list.id}`}><button  className="prodBtn2" >Edit</button> 
                 </Link>
                 </div>
+            </div>
             </div>
         )
     }

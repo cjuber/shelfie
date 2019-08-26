@@ -20,7 +20,7 @@ export default class Form extends Component {
     }
 
     componentDidMount(){
-        console.log('mount')
+        
         let {id} = this.props.match.params
         if(id) {
             axios.get(`http://localhost:8080/api/inventory/${id}`).then(response =>{
@@ -132,24 +132,27 @@ export default class Form extends Component {
 
     }
     render() {
-        console.log(this.state.list)
+        
         return (
-            <div>
+            <div className="form">
                 <div className="form-container">
                 <img height="150" src={this.state.imgURL} className="formImg"></img>
+                <div className="inputs">
                 <p>Image URL: </p>
                 <input value={this.state.img} onChange={ (e) => this.updateImg(e.target.value)}></input>
                 <p>Name: </p>
                 <input value={this.state.name} onChange={ (e) => this.updateName(e.target.value)}></input>
                 <p>Price: </p>
                 <input value={this.state.price} onChange={ (e) => this.updatePrice(e.target.value)}></input>
-                <button onClick={this.cancelBtn}>Cancel</button>
+                </div>
+                <br/>
+               <Link exact to='/'> <button className="formBtn1" onClick={this.cancelBtn}>Cancel</button></Link>
                 
 
             {!this.state.edit ?
-                (<Link exact to='/'><button onClick={this.addItem}>Add to Inventory</button></Link>)
+                (<Link exact to='/'><button className="formBtn" onClick={this.addItem}>Add to Inventory</button></Link>)
                 :
-                (<Link exact to='/'><button onClick={ () => this.updateProduct(this.state.list.id)}>Save Changes</button></Link>)
+                (<Link exact to='/'><button className="formBtn"  onClick={ () => this.updateProduct(this.state.list.id)}>Save Changes</button></Link>)
 
             }
             </div>
